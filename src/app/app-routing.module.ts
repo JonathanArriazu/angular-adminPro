@@ -15,8 +15,8 @@ const routes: Routes = [
   //path:'/register' AuthRouting
   //path:'/login' AuthRouting
 
-  { path: '**', component:NopagefoundComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '**', component:NopagefoundComponent }
 
 ];
 
