@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators'
+import { catchError, map, tap } from 'rxjs/operators'
 
 import { environment } from '../../environments/environment';
 
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form-interface';
+import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Usuario } from '../models/usuario.model';
+
+declare const google: any;
 
 const base_url = environment.base_url;
 
@@ -14,7 +19,29 @@ const base_url = environment.base_url;
 })
 export class UsuarioService {
 
-  constructor( private http: HttpClient ) { }
+  public usuario: Usuario | undefined;
+
+  constructor( private http: HttpClient,
+               private router: Router ) { }
+
+  validarToken() : Observable<boolean> {
+    const token = localStorage.getItem('token') || '';
+
+    return this.http.get(`${base_url}/login/renew`, {
+      headers: {
+        'x-token': token
+      }
+    }).pipe(
+      map( (resp: any) => {
+        const { email, google, nombre, role, img = '', uid } = resp.usuario;
+        this.usuario = new Usuario( nombre, email, '', img, google, role, uid );
+        localStorage.setItem('token', resp.token)
+        return true
+      }),
+      //map(resp => true), //Si tengo respuesta, retorno true
+      catchError( error => of(false) )
+    )
+  }
 
   crearUsuario ( formData: any ) {
     
@@ -46,6 +73,14 @@ export class UsuarioService {
           localStorage.setItem('token', resp.token)
         } )
       )
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    
+    google.accounts.id.revoke('joni.arriazu2@gmail.com', () => {      
+      this.router.navigateByUrl('/login');
+    })
   }
 
 }

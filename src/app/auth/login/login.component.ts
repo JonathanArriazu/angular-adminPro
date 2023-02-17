@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit, AfterViewInit{
             next: resp =>
             {
               console.log(resp);
+              this.router.navigateByUrl('/');
             }, error: (err) => 
             {
               console.warn(err.error.msg)
