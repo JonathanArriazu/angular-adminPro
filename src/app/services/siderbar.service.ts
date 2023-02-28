@@ -16,6 +16,15 @@ export class SiderbarService {
         { titulo: 'Promesas', url: 'promesas' },
         { titulo: 'Rxjs', url: 'rxjs' }
       ]
+    },
+    {
+      titulo: 'Mantenimiento',
+      icono: 'mdi mdi-folder-lock-open',
+      submenu: [
+        { titulo: 'Usarios', url: 'usuarios' },
+        { titulo: 'Hospitales', url: 'hospitales' },
+        { titulo: 'Medicos', url: 'medicos' }
+      ]
     }
   ]
 
