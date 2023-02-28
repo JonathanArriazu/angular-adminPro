@@ -27,7 +27,9 @@
                                    class="form-control" 
                                    id="exampleInputEmail1" 
                                    placeholder="Email del usuario"
-                                   formControlName="email">
+                                   formControlName="email"
+                                   [readOnly]="usuario.google">
+                                   <!-- Si usuario tiene la propiedad de google en true, no puede editarlo, solo leerlo -->
                         </div>
                     </div>
                     <button type="submit" 
