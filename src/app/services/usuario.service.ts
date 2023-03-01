@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, delay, map, tap } from 'rxjs/operators'
 
 import { environment } from '../../environments/environment';
 
@@ -117,6 +117,7 @@ export class UsuarioService {
     const url = `${base_url}/usuarios?desde=${desde}`
     return this.http.get<CargarUsuario>( url, this.headers)
             .pipe(
+              delay(200),
               map( resp => {
                 const usuarios = resp.usuarios.map( 
                   user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid) 
@@ -127,6 +128,17 @@ export class UsuarioService {
                 }
               })
             )
+  }
+
+  eliminarUsuario( usuario: Usuario ){
+    
+    const url = `${base_url}/usuarios/${usuario.uid}`
+    return this.http.delete( url, this.headers)
+
+  }
+
+  guardarUsuario(usuario: Usuario) {
+    return this.http.put(`${base_url}/usuarios/${ usuario.uid }`, usuario, this.headers)
   }
 
 }
