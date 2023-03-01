@@ -1,26 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from '../../../services/usuario.service';
 import { BusquedasService } from '../../../services/busquedas.service';
 import Swal from 'sweetalert2';
+import { ModalImagenService } from '../../../services/modal-imagen.service';
+import { delay, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html'
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   public totalUsuarios: number = 0;
   public usuarios: Usuario[] = [];
   public usuariosTemp: Usuario[] = [];
+
+  public imgSubs: Subscription;
   public desde: number = 0;
   public cargando: boolean = false;
 
   constructor( private usuarioServoce: UsuarioService,
-               private busquedaService: BusquedasService ) { }
+               private busquedaService: BusquedasService,
+               private modalImagenService: ModalImagenService ) { }
+               
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.cargarUsuarios();
+
+    this.imgSubs = this.modalImagenService.nuevaImagen
+    .pipe(
+      delay(100)
+    )
+    .subscribe( img => {
+        this.cargarUsuarios()
+    });
   }
 
   cargarUsuarios() {
@@ -96,6 +113,11 @@ export class UsuariosComponent implements OnInit {
       console.log('Se cambio el rol')
       console.log(resp)
     })
+  }
+
+  mostrarInfo(usuario: Usuario) {
+    console.log(usuario);
+    this.modalImagenService.abrirModal('usuarios', usuario.uid, usuario.img);
   }
 
 }

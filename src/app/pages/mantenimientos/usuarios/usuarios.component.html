@@ -48,7 +48,10 @@
                         <tbody>
                             <tr *ngFor="let usuario of usuarios">
                                 <td class="text-center">
-                                    <img class="avatar" [src]=usuario.imagenUrl alt="Avatar de usuario">
+                                    
+                                    <button class="modal-bg" type="button" data-toggle="modal" data-target=".bd-example-modal-lg">
+                                        <img class="avatar cursor" [src]=usuario.imagenUrl alt="Avatar de usuario" (click)="mostrarInfo(usuario)">
+                                    </button>
                                 </td>
                                 <td>{{ usuario.email }}</td>
                                 <td>{{ usuario.nombre }}</td>
