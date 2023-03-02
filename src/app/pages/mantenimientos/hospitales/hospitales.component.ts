@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription, delay } from 'rxjs';
 import { Hospital } from 'src/app/models/hospital.model';
+import { BusquedasService } from 'src/app/services/busquedas.service';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import Swal from 'sweetalert2';
 import { HospitalService } from '../../../services/hospital.service';
@@ -17,7 +18,8 @@ export class HospitalesComponent implements OnInit {
   public imgSubs: Subscription;
 
   constructor( private hospitalService: HospitalService,
-               private modalImagenService: ModalImagenService  ) { }
+               private modalImagenService: ModalImagenService,
+               private busquedaService: BusquedasService  ) { }
 
   ngOnInit(): void {
 
@@ -27,6 +29,20 @@ export class HospitalesComponent implements OnInit {
       .pipe( delay(100))
       .subscribe( img => this.cargarHospitales())
 
+  }
+
+  buscar(termino: string) {
+
+    if (termino.length === 0) {
+      //return; //Pero si realizo esto, al borrar luego de la busqueda, se quedaran los 
+              //usuarios buscados y no se actualizaran a la tabla de todos los usuarios
+      return this.cargarHospitales();
+    }
+
+    this.busquedaService.buscar('hospitales', termino)
+      .subscribe(resp => {
+        this.hospitales = resp
+      })
   }
 
   cargarHospitales() {
@@ -55,7 +71,7 @@ export class HospitalesComponent implements OnInit {
   }
 
   async abrirSweetAlert() {
-    const { value } = await Swal.fire<string>({
+    const { value = '' } = await Swal.fire<string>({
       title: ' Crear Hospital',
       text: 'Ingrese el nombre del nuevo hospital',
       input: 'text',
