@@ -26,24 +26,47 @@
 <div class="row"
      *ngIf="!cargando">
     <div class="col-12">
-        <div class="card">
+        <div class="card">            
             <div class="card-body">
-                <h4 class="card-title">Hospitales ({{ hospitales.length }})</h4>
-                <h6 class="card-subtitle">Hospitales registrados en mi aplicación</h6>
+
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="card-title">Hospitales ({{ hospitales.length }})</h4>
+                        <h6 class="card-subtitle">Hospitales registrados en mi aplicación</h6>
+                    </div>
+
+                    <div class="col">
+                        <div class="text-right">
+                            <button (click)="abrirSweetAlert()"
+                                    class="btn btn-primary">
+                                <i class="fa fa-hospital-o"></i>
+                                Crear hospital
+                            </button>                    
+                        </div>
+                    </div>               
+                </div>
+
+
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Foto</th>
                                 <th>Nombre</th>
-                                <th class="text-nowrap">Acciones</th>
+                                <th class="text-nowrap w100">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let hospital of hospitales"
                                 class="text-center">
                                 <td>
-                                    <img class="avatar cursor" [src]="hospital.img | imagen:'hospitales'" alt="">
+                                    <button class="modal-bg" type="button" data-toggle="modal" data-target=".bd-example-modal-lg">
+                                        <img class="avatar cursor"
+                                         [src]="hospital.img | imagen:'hospitales'"
+                                         (click)="mostrarInfo(hospital)" 
+                                         alt="">
+                                    </button>
+                                    
                                 </td>
                                 <td>
                                     <input type="text" 
@@ -53,8 +76,19 @@
                                 </td>                    
 
                                 <td class="text-nowrap text-center">
-                                    <a href="#" data-toggle="tooltip" data-original-title="Guardar cambios"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a href="#" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="guardarCambios(hospital)"
+                                       class="cursor"
+                                       data-toggle="tooltip" 
+                                       data-original-title="Guardar cambios">
+                                       <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                    </a>
+                                    <a (click)="eliminarHospital(hospital)"
+                                       class="cursor"
+                                       data-toggle="tooltip" 
+                                       data-original-title="Borrar"
+                                       >
+                                        <i class="fa fa-close text-danger"></i>
+                                    </a>
                                 </td>
                             </tr>                    
                         </tbody>
