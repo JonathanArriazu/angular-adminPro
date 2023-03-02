@@ -16,6 +16,10 @@ import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
+import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
+import { ImagenPipe } from '../pipes/imagen.pipe';
+import { PipesModule } from '../pipes/pipes.module';
 
 
 
@@ -29,7 +33,9 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
     PromesasComponent,
     RxjsComponent,
     PerfilComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    HospitalesComponent,
+    MedicosComponent
   ],
   exports: [ //Los exporto para poder usarlos en otras partes de la app, fuera de este modulo
     DashboardComponent,
@@ -46,7 +52,8 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
     RouterModule,
     FormsModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipesModule
   ]
 })
 export class PagesModule { }
